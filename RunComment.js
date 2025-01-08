@@ -1,8 +1,10 @@
 // ==UserScript==
 // @name         开始互动吧
-// @version      0.0.1
+// @version      0.1.1
 // @description  互动
 // @match        https://x.com/*
+// @updateURL    https://killeveee.github.io/RunComment.js
+// @downloadURL  https://killeveee.github.io/RunComment.js
 // @require      https://killeveee.github.io/x_comment.js
 // @grant        GM_xmlhttpRequest
 // @grant        GM_download
