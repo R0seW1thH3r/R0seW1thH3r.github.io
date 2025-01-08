@@ -99,10 +99,10 @@
         <input type="datetime-local" id="scheduler-startTime">
 
         <label>最小发布间隔（秒）</label>
-        <input type="number" id="scheduler-minInterval" value="1" min="1">
+        <input type="number" id="scheduler-minInterval" value="20" min="1">
 
         <label>最大发布间隔（秒）</label>
-        <input type="number" id="scheduler-maxInterval" value="10" min="1">
+        <input type="number" id="scheduler-maxInterval" value="60" min="1">
 
         <label>推文内容（每行一条推文,输入1条定时10条）</label>
         <textarea id="scheduler-c" style="height:94px;" placeholder="输入推文内容，每行一条推文"></textarea>
