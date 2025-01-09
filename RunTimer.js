@@ -119,7 +119,9 @@
         <button id="scheduler-scheduleBtn" style="background:#cdcdcd;color: #282828;float:right">查看进度</button>
     `;
     document.body.appendChild(form);
+    let _x_ = "";
     btn.addEventListener('click', () => {
+        _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.textContent;
         const isVisible = form.style.display === 'block';
         form.style.display = isVisible ? 'none' : 'block';
         var sc = localStorage.getItem('content');
@@ -131,10 +133,10 @@
             var nowTimestamp = new Date().getTime();
             var tbDeadlineTimestamp = parseInt(tb) + (24 * 60 * 60 * 1000);
             if (nowTimestamp > tbDeadlineTimestamp){
-                localStorage.setItem('tw', "");
-                localStorage.setItem('tweetNum', "");
-                localStorage.setItem('tc', "");
-                localStorage.setItem('tweetTime', "");
+                localStorage.setItem(_x_ + 'tw', "");
+                localStorage.setItem(_x_ + 'tweetNum', "");
+                localStorage.setItem(_x_ + 'tc', "");
+                localStorage.setItem(_x_ + 'tweetTime', "");
             }
         }
         updateSchedule();
@@ -158,7 +160,7 @@
             var startTimeInput = document.getElementById('scheduler-startTime').value;
             var minInterval = parseInt(document.getElementById('scheduler-minInterval').value);
             var maxInterval = parseInt(document.getElementById('scheduler-maxInterval').value);
-            var _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.textContent;
+            //var _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.textContent;
             Run(c, startTimeInput, minInterval, maxInterval, _x_);
         });
     }
@@ -177,9 +179,9 @@
         });
     }
     function getSchedeule() {
-        var tweetTime = localStorage.getItem('tweetTime');
-        var scheduleContent = localStorage.getItem('tc');
-        var tweetNum = localStorage.getItem('tweetNum');
+        var tweetTime = localStorage.getItem(_x_ + 'tweetTime');
+        var scheduleContent = localStorage.getItem(_x_ + 'tc');
+        var tweetNum = localStorage.getItem(_x_ + 'tweetNum');
         if (!tweetTime || !scheduleContent) {
             document.getElementById('show-scheduleContent').textContent = "暂无进度";
         } else {
@@ -188,7 +190,7 @@
         }
     }
     function updateSchedule() {
-        var tw = localStorage.getItem('tw');
+        var tw = localStorage.getItem(_x_ + 'tw');
         if (tw) {
             var dateObj = new Date(parseInt(tw)).toLocaleString('sv').replace(' ', 'T').slice(0, 16);;
             document.getElementById('scheduler-startTime').value = dateObj;
