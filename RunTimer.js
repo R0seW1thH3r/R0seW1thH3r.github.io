@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         守护世界大使猛猛推（间隔秒）
-// @version      0.1.4
+// @version      0.1.5
 // @description  批量定时
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunTimer.js
@@ -56,6 +56,7 @@
             font-size: 14px;
             box-sizing: border-box;
             background: black;
+            color: white;
         }
 
         .scheduler-form label {
