@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         开始互动吧
-// @version      0.1.1
+// @version      0.1.2
 // @description  互动
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunComment.js
@@ -196,7 +196,13 @@
 
     // 保存配置
     document.getElementById('save-comment-btn')?.addEventListener('click', () => {
-        var _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.textContent;
+        var _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        if (!_x_){
+            _x_=document.querySelector('[data-testid="SideNav_AccountSwitcher_Button"]').querySelector('div:first-child').querySelector('div:first-child').getAttribute('data-testid');
+            if(_x_)_x_ = "@" + _x_.split("UserAvatar-Container-")[1]
+            else _x_ = "";
+        } else if (_x_.textContent)_x_ = _x_.textContent;
+        else _x_ = "";
         Run(_x_);
         form.style.display = 'none';
     });
