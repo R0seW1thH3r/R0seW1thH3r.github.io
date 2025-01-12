@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         守护世界大使猛猛推（间隔秒）
-// @version      0.1.3
+// @version      0.1.4
 // @description  批量定时
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunTimer.js
@@ -126,7 +126,8 @@
             _x_=document.querySelector('[data-testid="SideNav_AccountSwitcher_Button"]').querySelector('div:first-child').querySelector('div:first-child').getAttribute('data-testid');
             if(_x_)_x_ = "@" + _x_.split("UserAvatar-Container-")[1]
             else _x_ = "";
-        } else _x_ = _x_.textContent;
+        } else if (_x_.textContent)_x_ = _x_.textContent;
+        else _x_ = "";
         const isVisible = form.style.display === 'block';
         form.style.display = isVisible ? 'none' : 'block';
         var sc = localStorage.getItem('content');
