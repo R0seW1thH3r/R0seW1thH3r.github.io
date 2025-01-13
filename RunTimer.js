@@ -107,7 +107,7 @@
         <label>最大发布间隔（秒）</label>
         <input type="number" id="scheduler-maxInterval" value="60" min="1">
 
-        <label>推文内容（每行一条推文,输入1条定时10条）</label>
+        <label>推文内容（每行一条推文）</label>
         <textarea id="scheduler-c" style="height:94px;" placeholder="输入推文内容，每行一条推文"></textarea>
 
         <label>随机Emoji（非必填，不填入则不添加）</label>
