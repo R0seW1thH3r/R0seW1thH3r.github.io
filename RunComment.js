@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         开始互动吧
-// @version      0.1.2
+// @version      0.1.3
 // @description  互动
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunComment.js
