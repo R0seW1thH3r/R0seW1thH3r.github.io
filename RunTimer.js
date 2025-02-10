@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         守护世界大使猛猛推（间隔秒）
-// @version      0.1.7
+// @version      0.1.8
 // @description  批量定时
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunTimer.js
@@ -122,11 +122,18 @@
     document.body.appendChild(form);
     let _x_ = "";
     btn.addEventListener('click', () => {
+        // _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        // if (!_x_){
+        //     _x_=document.querySelector('[data-testid="SideNav_AccountSwitcher_Button"]').querySelector('div:first-child').querySelector('div:first-child').getAttribute('data-testid');
+        //     if(_x_)_x_ = "@" + _x_.split("UserAvatar-Container-")[1]
+        //     else _x_ = "";
+        // } else if (_x_.textContent)_x_ = _x_.textContent;
+        // else _x_ = "";
         _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
         if (!_x_){
             _x_=document.querySelector('[data-testid="SideNav_AccountSwitcher_Button"]');
             if(!_x_) {
-                _x_=document.evaluate('//*[@id="layers"]/div[2]/div/div/div/div[1]/div/div[1]/div/div/div/div/div[1]/div/button/div/div', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                _x_=document.evaluate('//*[@id="layers"]/div[3]/div/div/div/div[2]/div/div/div/div/div/div[1]/div/div[1]/div[1]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
                 if(_x_.textContent)_x_ = _x_.textContent;
                 else _x_ = "";
             }
