@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         守护世界大使猛猛推（间隔秒）
-// @version      0.1.9
+// @version      0.1.10
 // @description  批量定时
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunTimer.js
@@ -98,7 +98,7 @@
     const form = document.createElement('div');
     form.className = 'scheduler-form';
     form.innerHTML = `
-        <label>起始时间（注意你在推特的时区）</label>
+        <label>起始时间（请系统使用24小时制）</label>
         <input type="datetime-local" id="scheduler-startTime">
 
         <label>最小发布间隔（秒）</label>
@@ -111,7 +111,7 @@
         <textarea id="scheduler-c" style="height:94px;" placeholder="输入推文内容，每行一条推文"></textarea>
 
         <label>随机Emoji（非必填，不填入则不添加）</label>
-        <textarea id="emoji-list" style="height:125px;">😊🥰😍🤗🥳😎🌟✨💫⭐️🌈🎉🎊💝💖💗💓💞💕❤️💜🧡💚💛💙🤍❤️‍🩹🎯🎪🎨🎭🎪🎡🎢🌅🌄☀️🌤️⛅️🌥️🌊🏖️🌿☘️🍀🌸🌺🌼🌻💐🌹🥀🦋🕊️🐣🐥🦄🦁🐯🦊🐨🐼🐷🐝🍎🍓🍒🍑🍊🍋🍍🥝🍇🥭🧁🍰🎂🍮🍪🍨🍧🍦🥤🧃🎈🎆🎇🏆🎖️🏅🥇👑💎💫🌠⚡️💪👊✌️🤝🙌👐🤲🫂🎵🎶🎹🎸🪕🎺📚💡💭💫🌈🎨🎯</textarea>
+        <textarea id="emoji-list" style="height:48px;">😊🥰😍🤗🥳😎🌟✨💫⭐️🌈🎉🎊💝💖💗💓💞💕❤️💜🧡💚💛💙🤍❤️‍🩹🎯🎪🎨🎭🎪🎡🎢🌅🌄☀️🌤️⛅️🌥️🌊🏖️🌿☘️🍀🌸🌺🌼🌻💐🌹🥀🦋🕊️🐣🐥🦄🦁🐯🦊🐨🐼🐷🐝🍎🍓🍒🍑🍊🍋🍍🥝🍇🥭🧁🍰🎂🍮🍪🍨🍧🍦🥤🧃🎈🎆🎇🏆🎖️🏅🥇👑💎💫🌠⚡️💪👊✌️🤝🙌👐🤲🫂🎵🎶🎹🎸🪕🎺📚💡💭💫🌈🎨🎯</textarea>
 
         <label id="show-tweetTime" style="color:#f0721f;padding:0 0 0 10px"></label>
         <label id="show-scheduleContent" style="color:#f0721f;padding:0 0 0 10px"></label>
