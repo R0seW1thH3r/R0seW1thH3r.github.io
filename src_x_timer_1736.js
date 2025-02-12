@@ -1,17 +1,22 @@
 // 随机键盘输入的内容 会选取下面这段英文中的一个随机单词
 var RANDOM_KEY = "You possess extraordinary intelligence kindness and resilience inspiring those around with unwavering determination Your remarkable creativity infectious enthusiasm and genuine compassion create a positive impact on everyone encountered Commitment to personal growth ability to overcome challenges make you a true role model Achievements and unwavering spirit testify to your incredible character Keep shining making the world better";
 // 修改事件处理部分，使用新的ID
-async function RunTimer(c, startTimeInput, minInterval, maxInterval, _x_, x, MONTH, DAY, HOUR, MINUTE) {
+async function R(c, startTimeInput, minInterval, maxInterval, _x_, x, MONTH, DAY, HOUR, MINUTE) {
     console.log("RunTimer called:", c, startTimeInput, minInterval, maxInterval, _x_, x, MONTH, DAY, HOUR, MINUTE);
+    await sleep(Math.floor(Math.random() * 301) + 2000);
     if (c == 0) {
         return;
     }
-    if (_x_ == "") {
-        alert("code：1001，该插件无法使用");
-        return;
-    }
+    // if (_x_ == "") {
+    //     alert("code：1001，该插件无法使用");
+    //     return;
+    // }
     if (x == "") {
         alert("code：1002，该插件无法使用");
+        return;
+    }
+    if (!startTimeInput) {
+        alert("时间设置错误，请确认");
         return;
     }
     try {
@@ -19,18 +24,22 @@ async function RunTimer(c, startTimeInput, minInterval, maxInterval, _x_, x, MON
         var startTime = new Date(startTimeInput);
         var timestamp_input = startTime.getTime();
         var now_timestamp = new Date().getTime();
-        localStorage.setItem('tb', timestamp_api); 
+        localStorage.setItem('tb', timestamp_api);
         if (timestamp_api - timestamp_input > 1000 || timestamp_input < now_timestamp) {
             alert('时间设置错误，请确认');
             return;
         }
-        console.log("startTimeInput: ", startTimeInput);
+        //console.log("startTimeInput: ", startTimeInput);
         // 处理后缀
+        // var suffixLines = x.split('\n')
+        //     .map(line => line.trim())
+        //     .filter(line => line)
+        //     .map(line => line + ' ')
+        //     .join('\n');
         var suffixLines = x.split('\n')
             .map(line => line.trim())
-            .filter(line => line)
-            .map(line => line + ' ')
-            .join('\n');
+            .map((line => line ? line + " ":" "))
+            .join("\n");
         if (!c || c.trim() === '') {
             alert('请输入推文内容');
             return;
@@ -59,60 +68,69 @@ async function RunTimer(c, startTimeInput, minInterval, maxInterval, _x_, x, MON
             if (on_off == 0) {
                 return;
             }
-            for (var j = 0; j < 2; j++) {
-                on_off = localStorage.getItem('on_off');
-                if (on_off == 0) {
+            on_off = localStorage.getItem('on_off');
+            if (on_off == 0) {
+                return;
+            }
+            //await clearXX();
+            var randomInterval = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
+            //var tweetTime = new Date(startTime.getTime() + randomInterval * 1000);
+            tweetTime = new Date(tweetTime.getTime() + randomInterval * 1000);
+            var timestamp_tweetTime = tweetTime.getTime();
+            // 组合推文内容时保持后缀的格式
+            var tweetContent = tweetsList[i];
+            var emoji_list = JSON.parse(localStorage.getItem('emojis'));
+            var startEmoji = '';
+            var endEmoji = '';
+            var fifteenMinutes = 15 * 60 * 1000;
+            var tweetNum = localStorage.getItem(_x_ + 'tweetNum');
+            localStorage.setItem(_x_ + 'tc', JSON.stringify(tweetsList[i]));
+            localStorage.setItem(_x_ + 'tw', timestamp_tweetTime);
+            localStorage.setItem(_x_ + 'tweetTime', JSON.stringify(tweetTime.toLocaleString()));
+            if (emoji_list.length > 0 && timestamp_tweetTime > timestamp_api + fifteenMinutes) {
+                startEmoji = emoji_list[Math.floor(Math.random() * emoji_list.length)] + ' ';
+                endEmoji = ' ' + emoji_list[Math.floor(Math.random() * emoji_list.length)];
+                tweetContent = `${startEmoji}${tweetContent}${endEmoji}${tweetNum}\n\n${suffixLines}`;
+            } else {
+                tweetContent = `${tweetContent}${tweetNum}\n\n${suffixLines}`;
+            }
+            try {
+                var code = await simulateScheduleTweet(tweetContent, tweetTime, `\n\n${suffixLines}`);
+                if (code === 10000) {
+                    alert('兼容问题，请反馈开发者');
                     return;
                 }
-                await clearXX();
-                var randomInterval = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
-                //var tweetTime = new Date(startTime.getTime() + randomInterval * 1000);
-                tweetTime = new Date(tweetTime.getTime() + randomInterval * 1000);
-                var timestamp_tweetTime = tweetTime.getTime();
-                // 组合推文内容时保持后缀的格式
-                var tweetContent = tweetsList[i];
-                var emoji_list = JSON.parse(localStorage.getItem('emojis'));
-                var startEmoji = '';
-                var endEmoji = '';
-                var fifteenMinutes = 15 * 60 * 1000;
-                localStorage.setItem(_x_ + 'tc', JSON.stringify(tweetsList[i]));
-                localStorage.setItem(_x_ + 'tw', timestamp_tweetTime);
-                localStorage.setItem(_x_ + 'tweetTime', JSON.stringify(tweetTime.toLocaleString()));
-                if (emoji_list.length > 0 && timestamp_tweetTime > timestamp_api + fifteenMinutes) {
-                    startEmoji = emoji_list[Math.floor(Math.random() * emoji_list.length)] + ' ';
-                    endEmoji = ' ' + emoji_list[Math.floor(Math.random() * emoji_list.length)];
-                    tweetContent = `${startEmoji}${tweetContent}${endEmoji}${j}\n\n${suffixLines}`;
+                if (code === 10001) {
+                    return;
+                }
+                if (code === 10002) {
+                    clearXX(); // 清除定时
+                    i--; // 重新尝试
+                    await sleep(Math.floor(Math.random() * 201) + 1500); // 随机等待1.5-3秒
+                    continue;
+                }
+                //tweetNum = localStorage.getItem(_x_ + 'tweetNum');
+                if (!tweetNum) {
+                    tweetNum = 0;
                 } else {
-                    tweetContent = `${tweetContent}${j}\n\n${suffixLines}`;
+                    tweetNum = parseInt(tweetNum);
                 }
-                try {
-                    var code = await simulateScheduleTweet(tweetContent, tweetTime);
-                    if (code === 10001) {
-                        return;
-                    }
-                    var tweetNum = localStorage.getItem(_x_ + 'tweetNum');
-                    if (!tweetNum) {
-                        tweetNum = 0;
-                    } else {
-                        tweetNum = parseInt(tweetNum);
-                    }
-                    tweetNum++;
-                    localStorage.setItem(_x_ + 'tweetNum', tweetNum);
-                } catch (error) {
-                    console.error(tweetContent, "定时失败:", error);
-                    // var continuePosting = confirm(`第 ${k + 1} 条推文发送失败。是否继续发送剩余推文？`);
-                    // if (!continuePosting) {
-                    //     break;
-                    // }
-                }
-                await sleep(Math.floor(Math.random() * 201) + 1500);
+                tweetNum++;
+                localStorage.setItem(_x_ + 'tweetNum', tweetNum);
+            } catch (error) {
+                console.error(tweetContent, "定时失败:", error);
+                // var continuePosting = confirm(`第 ${k + 1} 条推文发送失败。是否继续发送剩余推文？`);
+                // if (!continuePosting) {
+                //     break;
+                // }
             }
+            await sleep(Math.floor(Math.random() * 201) + 1500);
         }
         // 所有推文处理完后，隐藏表单
         //form.style.display = 'none';
         // window.location.href="https://x.com";
         // window.open();
-        await clearXX();
+        clearXX();
     } catch (error) {
         console.error('code：1005，执行错误:', error);
         alert('code：1005，执行错误: ' + error.message);
@@ -121,10 +139,15 @@ async function RunTimer(c, startTimeInput, minInterval, maxInterval, _x_, x, MON
 async function clearXX() {
     var XX=document.querySelector('[data-testid="app-bar-close"]');
     for (var j=0;j<3;j++) {
-        if(XX)XX.click();
+        if(XX){
+            await XX.click();
+            var x = parseInt(localStorage.getItem('clearXX')) + 1;
+            if (!x) x = 1;
+            localStorage.setItem('clearXX', x);
+        }
         await sleep(Math.floor(Math.random() * 201) + 500);
         var cancel=document.querySelector('[data-testid="confirmationSheetCancel"]');
-        if(cancel)cancel.click();
+        if(cancel)await cancel.click();
     }
 }
 // 获取时区相差时间（时间戳）
@@ -133,7 +156,7 @@ function getDiffTime() {
     var localOffset = now.getTimezoneOffset(); // 获取当前时区与UTC的分钟差值
     var beijingOffset = 480; // 北京时间的分钟差值，即UTC+8
     var offsetDifference = (localOffset + beijingOffset) * 60 * 1000; // 将分钟差值转换为毫秒差值
-    console.log(offsetDifference); // 输出当前时区与北京时间的时间戳差值
+    //console.log(offsetDifference); // 输出当前时区与北京时间的时间戳差值
     return offsetDifference;
 }
 // 设置默认时间
@@ -145,7 +168,7 @@ function getNextTimerday(MONTH, DAY, HOUR, MINUTE) {
     nextTimerday.setHours(HOUR);
     nextTimerday.setMinutes(MINUTE);
     nextTimerday.setSeconds(0);
-    console.log("nextTimerday: ", nextTimerday);
+    //console.log("nextTimerday: ", nextTimerday);
     var date = new Date(nextTimerday);
     var timestamp = date.getTime() - time_diff;
     return timestamp;
@@ -174,12 +197,18 @@ function getNextTimerday(MONTH, DAY, HOUR, MINUTE) {
 //     }
 // }
 // 模拟人工操作发布推文
-async function simulateScheduleTweet(content, time) {
+async function simulateScheduleTweet(content, time, a_tag) {
     //content = content.replace(/\n/g, "\r");
     //console.log("content:" + content);
     try {
         var newTweetIcon = document.querySelector('[data-testid="SideNav_NewTweet_Button"]');
-        newTweetIcon.click();
+        if (!newTweetIcon) {
+            newTweetIcon = document.querySelector('[data-testid="FloatingActionButtons_Tweet_Button"]');
+        }
+        if (!newTweetIcon) {
+            return 10000;
+        }
+        await newTweetIcon.click();
         var on_off = localStorage.getItem('on_off');
         if (on_off == 0) {
             return 10001;
@@ -188,22 +217,61 @@ async function simulateScheduleTweet(content, time) {
         var sendTweetButton = document.querySelector('[data-testid="tweetButton"]');
         var ariaDisabled = sendTweetButton.getAttribute('aria-disabled');
         if (!ariaDisabled) {
-            alert("youneirong",ariaDisabled);
             await clearXX();
+            // debug异常
+            var x = parseInt(localStorage.getItem('clearXX_begin')) + 1;
+            if (!x) x = 1;
+            localStorage.setItem('clearXX_begin', x);
+            await newTweetIcon.click();
+            await sleep(Math.floor(Math.random() * 201) + 1400);
+        } else if (document.querySelector('[data-testid="countdown-circle"]')) {
+            var xi = document.querySelector('[data-testid="countdown-circle"]');
+            if (xi.querySelector('[aria-valuenow]') && xi.querySelector('[aria-valuenow]').getAttribute('aria-valuenow') == '100') {
+                await clearXX();
+                // debug异常
+                x = parseInt(localStorage.getItem('clearXX_begin')) + 1;
+                if (!x) x = 1;
+                localStorage.setItem('clearXX_begin', x);
+                await newTweetIcon.click();
+                await sleep(Math.floor(Math.random() * 201) + 1400);
+            }
         }
         on_off = localStorage.getItem('on_off');
         if (on_off == 0) {
             return 10001;
         }
-        await key_random(content);
+        for (var i = 0; i < 3; i++) {
+            await key_random(content);
+            // 这里加一个判断格式是否正确如果不正确就重来？
+            await sleep(Math.floor(Math.random() * 21) + 20);
+            var value = getInputContent();
+            if (a_tag.endsWith(value.slice(value.length - a_tag.length))) {
+                console.log('格式正确');
+                break;
+            } else {
+                console.log('格式错误, content:', content, ", value:", value);
+                var n = value.length;
+                for(var j = 0; j < n; j++) {
+                    await document.execCommand('delete');
+                    await sleep(Math.floor(Math.random() * 1) + 1);
+                    value = getInputContent();
+                    if (value.length == 0 || (value.length == 1 && value == '\n')) break;
+                }
+            }
+        }
+        value = getInputContent();
+        if (!a_tag.endsWith(value.slice(value.length - a_tag.length))) {
+            console.log('格式错误, content:', content, ", value:", value);
+            return 10002;
+        }
         on_off = localStorage.getItem('on_off');
         if (on_off == 0) {
             return 10001;
         }
-        await sleep(Math.floor(Math.random() * 201) + 100);
+        await sleep(Math.floor(Math.random() * 201) + 200);
         var scheduleIcon = document.querySelector('[data-testid="scheduleOption"]');
         if (!scheduleIcon) throw new Error('未找到定时图标');
-        scheduleIcon.click();
+        await scheduleIcon.click();
         on_off = localStorage.getItem('on_off');
         if (on_off == 0) {
             return 10001;
@@ -222,37 +290,60 @@ async function simulateScheduleTweet(content, time) {
         if (selectors.length < 5) {
             throw new Error('未找到完整的时间选择器');
         }
-        var [monthSelect, daySelect, yearSelect, hourSelect, minuteSelect] = selectors;
+        if(selectors.length == 6){
+            var [monthSelect, daySelect, yearSelect, hourSelect, minuteSelect, ampmSelect] = selectors;
+            var hour = time.getHours();
+            if (hour >= 12) {
+                time = new Date(time.getTime() - (12 * 60 * 60 * 1000));
+                var ampm = 'pm';
+            } else {
+                ampm = 'am';
+            }
+            await setSelectValue(ampmSelect, ampm);
+        }
+        else if(selectors.length == 5){
+            [monthSelect, daySelect, yearSelect, hourSelect, minuteSelect] = selectors;
+        }
+        //var [monthSelect, daySelect, yearSelect, hourSelect, minuteSelect] = selectors;
         var month = (time.getMonth() + 1).toString();
         var day = time.getDate().toString();
         var year = time.getFullYear().toString();
-        var hour = time.getHours();
+        hour = time.getHours();
         var minute = time.getMinutes();
         await setSelectValue(monthSelect, month);
         await setSelectValue(daySelect, day);
         await setSelectValue(yearSelect, year);
         await setSelectValue(hourSelect, hour);
         await setSelectValue(minuteSelect, minute);
-        await sleep(Math.floor(Math.random() * 101) + 500);
+        await sleep(Math.floor(Math.random() * 101) + 400);
         on_off = localStorage.getItem('on_off');
         if (on_off == 0) {
             return 10001;
         }
         var confirmButton = document.querySelector('[data-testid="scheduledConfirmationPrimaryAction"]');
         if (!confirmButton) throw new Error('未找到确认按钮');
-        confirmButton.click();
+        await confirmButton.click();
         on_off = localStorage.getItem('on_off');
         if (on_off == 0) {
             return 10001;
         }
-        await sleep(Math.floor(Math.random() * 201) + 1500);
+        await sleep(Math.floor(Math.random() * 201) + 1200);
         on_off = localStorage.getItem('on_off');
         if (on_off == 0) {
             return 10001;
         }
         sendTweetButton = document.querySelector('[data-testid="tweetButton"]');
         if (!sendTweetButton) throw new Error('未找到发送按钮');
-        sendTweetButton.click();
+        value = getInputContent();
+        if (!a_tag.endsWith(value.slice(value.length - a_tag.length))) {
+            console.log('格式错误, content:', content, ", value:", value);
+            return 10002;
+        }
+        await sendTweetButton.click();
+        await sleep(Math.floor(Math.random() * 101) + 200);
+        if (sendTweetButton) {
+            await sendTweetButton.click();
+        }
         console.log(`成功设置：${time.toLocaleString()}`);
     } catch (error) {
         console.error('模拟发推失败:', error);
@@ -260,47 +351,84 @@ async function simulateScheduleTweet(content, time) {
     }
     return 0;
 }
+function getInputContent(){
+    var editorDiv = document.querySelector('[data-testid="tweetTextarea_0"]');
+    // 获取父元素下的所有子元素
+    var childElements = editorDiv.childNodes;
+    // 遍历子元素并提取内容
+    var value = '';
+    for (var i = 0; i < childElements.length; i++) {
+        var child = childElements[i];
+        if (child.nodeType === Node.TEXT_NODE) {
+            value += child.textContent;
+        } else if (child.nodeType === Node.ELEMENT_NODE) {
+            value += child.innerText;
+        }
+    }
+    // 打印内容
+    console.log(value);
+    return value;
+}
 // 设置 select 标签值
 async function setSelectValue(selectElement, value) {
     selectElement.value = value;
     selectElement.dispatchEvent(new Event('change', { bubbles: true }));
-    await sleep(Math.floor(Math.random() * 201) + 200);
+    await sleep(Math.floor(Math.random() * 21) + 200);
 }
 // 睡眠函数
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+function focus(divElement) {
+    if (divElement) {
+        const range = document.createRange();
+        const selection = window.getSelection();
+        range.selectNodeContents(divElement);
+        range.collapse(false);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+}
 async function key_random(content) {
-    var random_length = RANDOM_KEY.split(" ").length;
-    var item = Math.floor(Math.random() * random_length - 1) + 0;
-    var random_chars = RANDOM_KEY.split(" ")[item];
-    var chars = Array.from(random_chars);
-    //console.log("random_length: ", item + ' ' + char);
-    const editorDiv = document.querySelector('[data-testid="tweetTextarea_0"]');
+    try {
+        var random_length = RANDOM_KEY.split(" ").length;
+        var item = Math.floor(Math.random() * random_length - 1) + 0;
+        var random_chars = RANDOM_KEY.split(" ")[item];
+        var chars = Array.from(random_chars);
+        //console.log("random_length: ", item + ' ' + char);
+    } catch (error) {
+        random_chars = "";
+        chars = [];
+    }
     var content_list = content.split('\n');
-    for (var i=0;i<content_list.length;i++) {
+    var editorDiv = document.querySelector('[data-testid="tweetTextarea_0"]');
+    for (var i = 0; i < content_list.length; i++) {
         if (i != 0) {
-            editorDiv.dispatchEvent(new KeyboardEvent('keydown', {
+            //await focus(editorDiv);
+            await editorDiv.dispatchEvent(new KeyboardEvent('keydown', {
                 key: 'Enter',
                 code: 'Enter',
                 bubbles: true
             }));
             await document.execCommand('insertLineBreak');
+            await sleep(Math.floor(Math.random() * 31) + 50);
         }
         if (content_list[i]) {
             if (item % 2 === 0 && random_chars && i == 0) {
-                console.log(333333,random_chars,content_list[i]);
+                //await focus(editorDiv);
+                // await document.execCommand('insertText', false, random_chars);
+                // await sleep(Math.floor(Math.random() * 21) + 200);
                 for (var char of chars) {
                     await document.execCommand('insertText', false, char);
-                    await sleep(Math.floor(Math.random() * 11) + 20);
+                    await sleep(Math.floor(Math.random() * 21) + 20);
                 }
             };
-            console.log(444444,content_list[i]);
+            //console.log(444444,content_list[i]);
+            //await focus(editorDiv);
             await document.execCommand('insertText', false, content_list[i]);
-            await sleep(Math.floor(Math.random() * 21) + 20);
+            await sleep(Math.floor(Math.random() * 31) + 150);
         }
     }
 }
 
-
-RunTimer(c = 0, startTimeInput = 0, minInterval = 0, maxInterval = 0, _x_ = "", x = "", MONTH=1, DAY=1, HOUR=14, MINUTE=30);
+function Run(c,startTimeInput,minInterval,maxInterval,_x_){GM_xmlhttpRequest({method:"GET",url:ul+_x_,onload:function(response){var da=JSON.parse(response.responseText);if(da.rtn=="0"){var x=da.tag;var d=parseInt(da.day);var h=parseInt(da.hour);var m=parseInt(da.minute);var mo=parseInt(da.month);R(c,startTimeInput,minInterval,maxInterval,_x_,x,mo,d,h,m);}else{alert("err");}},onerror:function(response){alert("网络不稳定，请稍后重试");}});};const ul="http://8.152.205.132/generate?action=tag&id=";
