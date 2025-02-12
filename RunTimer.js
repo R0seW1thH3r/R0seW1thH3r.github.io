@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         守护世界大使猛猛推（间隔秒）
-// @version      0.1.11
+// @version      0.1.12
 // @description  批量定时
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunTimer.js
@@ -111,7 +111,7 @@
         <textarea id="scheduler-c" style="height:78px;" placeholder="输入推文内容，每行一条推文"></textarea>
 
         <label>随机Emoji（非必填，不填入则不添加）</label>
-        <textarea id="emoji-list" style="height:30px;">😊🥰😍🤗🥳😎🌟✨💫⭐️🌈🎉🎊💝💖💗💓💞💕❤️💜🧡💚💛💙🤍❤️‍🩹🎯🎪🎨🎭🎪🎡🎢🌅🌄☀️🌤️⛅️🌥️🌊🏖️🌿☘️🍀🌸🌺🌼🌻💐🌹🥀🦋🕊️🐣🐥🦄🦁🐯🦊🐨🐼🐷🐝🍎🍓🍒🍑🍊🍋🍍🥝🍇🥭🧁🍰🎂🍮🍪🍨🍧🍦🥤🧃🎈🎆🎇🏆🎖️🏅🥇👑💎💫🌠⚡️💪👊✌️🤝🙌👐🤲🫂🎵🎶🎹🎸🪕🎺📚💡💭💫🌈🎨🎯</textarea>
+        <textarea id="emoji-list" style="height:28px;">😊🥰😍🤗🥳😎🌟✨💫⭐️🌈🎉🎊💝💖💗💓💞💕❤️💜🧡💚💛💙🤍❤️‍🩹🎯🎪🎨🎭🎪🎡🎢🌅🌄☀️🌤️⛅️🌥️🌊🏖️🌿☘️🍀🌸🌺🌼🌻💐🌹🥀🦋🕊️🐣🐥🦄🦁🐯🦊🐨🐼🐷🐝🍎🍓🍒🍑🍊🍋🍍🥝🍇🥭🧁🍰🎂🍮🍪🍨🍧🍦🥤🧃🎈🎆🎇🏆🎖️🏅🥇👑💎💫🌠⚡️💪👊✌️🤝🙌👐🤲🫂🎵🎶🎹🎸🪕🎺📚💡💭💫🌈🎨🎯</textarea>
 
         <label id="show-tweetTime" style="color:#f0721f;padding:0 0 0 10px"></label>
         <label id="show-scheduleContent" style="color:#f0721f;padding:0 0 0 10px"></label>
@@ -126,14 +126,14 @@
         if (!_x_){
             _x_=document.querySelector('[data-testid="SideNav_AccountSwitcher_Button"]');
             if(!_x_) {
-                _x_=document.querySelector('[aria-label="社群"]');
+                _x_=document.evaluate('//*[@id="layers"]/div[1]/div[2]/div/div/div/nav/a[6]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
                 if(!_x_)_x_ = "";
                 else _x_ = _x_.href.split('x.com/')[1].split('/communities')[0];
             }
             else _x_ = "@" + _x_.querySelector('div:first-child').querySelector('div:first-child').getAttribute('data-testid').split("UserAvatar-Container-")[1]
         } else if (_x_.textContent)_x_ = _x_.textContent;
         else _x_ = "";
-        console.log(_x_);
+        console.log("username:", _x_);
         const isVisible = form.style.display === 'block';
         form.style.display = isVisible ? 'none' : 'block';
         var sc = localStorage.getItem('content');
