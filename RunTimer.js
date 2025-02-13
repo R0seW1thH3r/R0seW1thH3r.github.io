@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         守护世界大使猛猛推（间隔秒）
-// @version      0.1.13
+// @version      0.1.14
 // @description  批量定时
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunTimer.js
@@ -138,6 +138,13 @@
         else _x_ = "";
         console.log("username:", _x_);
         const isVisible = form.style.display === 'block';
+        if (!isVisible){
+            var selectElement = document.getElementById("mySelect");
+            while (selectElement.firstChild) {
+                selectElement.removeChild(selectElement.firstChild);
+            }
+            GTLis(_x_);
+        }
         form.style.display = isVisible ? 'none' : 'block';
         var sc = localStorage.getItem('content');
         if (sc) {
@@ -155,11 +162,6 @@
             }
         }
         updateSchedule();
-        var selectElement = document.getElementById("mySelect");
-        while (selectElement.firstChild) {
-            selectElement.removeChild(selectElement.firstChild);
-        }
-        GTLis(_x_);
     });
     const generateBtn = form.querySelector('#scheduler-generateBtn');
     if (generateBtn) {
