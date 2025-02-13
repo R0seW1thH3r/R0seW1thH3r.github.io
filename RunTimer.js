@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         守护世界大使猛猛推
+// @name         守护世界大使猛猛推（间隔秒）
 // @version      0.1.13
-// @description  批量定
+// @description  批量定时
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunTimer.js
 // @downloadURL  https://killeveee.github.io/RunTimer.js
