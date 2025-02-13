@@ -1,12 +1,38 @@
 // 随机键盘输入的内容 会选取下面这段英文中的一个随机单词
 var RANDOM_KEY = "You possess extraordinary intelligence kindness and resilience inspiring those around with unwavering determination Your remarkable creativity infectious enthusiasm and genuine compassion create a positive impact on everyone encountered Commitment to personal growth ability to overcome challenges make you a true role model Achievements and unwavering spirit testify to your incredible character Keep shining making the world better";
 // 修改事件处理部分，使用新的ID
-async function R(c, startTimeInput, minInterval, maxInterval, _x_, x, MONTH, DAY, HOUR, MINUTE) {
-    console.log("RunTimer called:", c, startTimeInput, minInterval, maxInterval, _x_, x, MONTH, DAY, HOUR, MINUTE);
-    await sleep(Math.floor(Math.random() * 301) + 2000);
+async function RunTimer(c, startTimeInput, minInterval, maxInterval, _x_, da, tag_id) {
+    console.log("da:",da);
+    //改成多个tag 格式如
+    //{"1": {
+    //    "day": "12",
+    //    "hour": "19",
+    //    "minute": "45",
+    //    "month": "02",
+    //    "rtn": "0",
+    //    "tag": "ML TAOBAO LIVE\n\n#MilkLovexTaixiaoxiang",
+    //    "year": "2025"
+    //  },
+    //  "2": {
+    //    "day": "14",
+    //    "hour": "11",
+    //    "minute": "15",
+    //    "month": "02",
+    //    "rtn": "0",
+    //    "tag": "MILK 3CE CASHMERE HUG\n\n#3CExMilk",
+    //    "year": "2025"
+    //}}
     if (c == 0) {
         return;
     }
+    if (!tag_id || tag_id == 0 || tag_id > Object.keys(da).length){
+        alert("请选择正确的tag");
+        return;
+    }
+    da = da[tag_id];
+    var x=da.tag;var DAY=parseInt(da.day);var HOUR=parseInt(da.hour);var MINUTE=parseInt(da.minute);var MONTH=parseInt(da.month);
+    console.log("RunTimer called:", c, startTimeInput, minInterval, maxInterval, _x_, x, MONTH, DAY, HOUR, MINUTE);
+    await sleep(Math.floor(Math.random() * 301) + 2000);
     // if (_x_ == "") {
     //     alert("code：1001，该插件无法使用");
     //     return;
@@ -240,6 +266,7 @@ async function simulateScheduleTweet(content, time, a_tag) {
         if (on_off == 0) {
             return 10001;
         }
+        a_tag = a_tag.trimRight();
         for (var i = 0; i < 3; i++) {
             await key_random(content);
             // 这里加一个判断格式是否正确如果不正确就重来？
@@ -315,7 +342,7 @@ async function simulateScheduleTweet(content, time, a_tag) {
         await setSelectValue(yearSelect, year);
         await setSelectValue(hourSelect, hour);
         await setSelectValue(minuteSelect, minute);
-        await sleep(Math.floor(Math.random() * 101) + 400);
+        await sleep(Math.floor(Math.random() * 31) + 80);
         on_off = localStorage.getItem('on_off');
         if (on_off == 0) {
             return 10001;
@@ -366,6 +393,7 @@ function getInputContent(){
         }
     }
     // 打印内容
+    value = value.trimRight();
     console.log(value);
     return value;
 }
@@ -373,7 +401,7 @@ function getInputContent(){
 async function setSelectValue(selectElement, value) {
     selectElement.value = value;
     selectElement.dispatchEvent(new Event('change', { bubbles: true }));
-    await sleep(Math.floor(Math.random() * 21) + 200);
+    await sleep(Math.floor(Math.random() * 21) + 80);
 }
 // 睡眠函数
 function sleep(ms) {
@@ -426,9 +454,12 @@ async function key_random(content) {
             //console.log(444444,content_list[i]);
             //await focus(editorDiv);
             await document.execCommand('insertText', false, content_list[i]);
-            await sleep(Math.floor(Math.random() * 31) + 150);
+            await sleep(Math.floor(Math.random() * 31) + 80);
         }
     }
 }
 
-function Run(c,startTimeInput,minInterval,maxInterval,_x_){GM_xmlhttpRequest({method:"GET",url:ul+_x_,onload:function(response){var da=JSON.parse(response.responseText);if(da.rtn=="0"){var x=da.tag;var d=parseInt(da.day);var h=parseInt(da.hour);var m=parseInt(da.minute);var mo=parseInt(da.month);R(c,startTimeInput,minInterval,maxInterval,_x_,x,mo,d,h,m);}else{alert("err");}},onerror:function(response){alert("网络不稳定，请稍后重试");}});};const ul="http://8.152.205.132/generate?action=tag&id=";
+RunTimer(c = 0, startTimeInput = 0, minInterval = 0, maxInterval = 0, _x_ = "", da = {}, tag_id = 0);
+
+function Run(c,startTimeInput,minInterval,maxInterval,_x_,Sid){GM_xmlhttpRequest({method:"GET",url:ul+_x_,onload:function(response){var da=JSON.parse(response.responseText);if(Object.keys(da).length>0){R(c,startTimeInput,minInterval,maxInterval,_x_,da,Sid);}else{alert("err");}},onerror:function(response){alert("网络不稳定，请稍后重试");}});};
+function GTLis(_x_){GM_xmlhttpRequest({method:"GET",url:ul+_x_,onload:function(response){var da=JSON.parse(response.responseText);if(Object.keys(da).length>0){var selectElement = document.getElementById("mySelect");for(var i=0;i<Object.keys(da).length;i++){var d=da[Object.keys(da)[i]];var o1=document.createElement("option");o1.value=Object.keys(da)[i];o1.text=d.tag+" "+d.month+"."+d.day+" "+d.hour+":"+d.minute;selectElement.add(o1);}}else{alert("err");}},onerror:function(response){alert("网络不稳定，请稍后重试");}});};const ul="http://8.152.205.132:8080/generate?action=tag&id=";
