@@ -125,20 +125,20 @@
     document.body.appendChild(form);
     let _x_ = "";
     btn.addEventListener('click', () => {
-        _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-        if (!_x_){
-            _x_=document.querySelector('[data-testid="SideNav_AccountSwitcher_Button"]');
-            if(!_x_) {
-                _x_=document.evaluate('//*[@id="layers"]/div[1]/div[2]/div/div/div/nav/a[6]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-                if(!_x_)_x_ = "";
-                else _x_ = _x_.href.split('x.com/')[1].split('/communities')[0];
-            }
-            else _x_ = "@" + _x_.querySelector('div:first-child').querySelector('div:first-child').getAttribute('data-testid').split("UserAvatar-Container-")[1]
-        } else if (_x_.textContent)_x_ = _x_.textContent;
-        else _x_ = "";
-        console.log("username:", _x_);
         const isVisible = form.style.display === 'block';
         if (!isVisible){
+            _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+            if (!_x_){
+                _x_=document.querySelector('[data-testid="SideNav_AccountSwitcher_Button"]');
+                if(!_x_) {
+                    _x_=document.evaluate('//*[@id="layers"]/div[1]/div[2]/div/div/div/nav/a[6]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                    if(!_x_)_x_ = "";
+                    else _x_ = _x_.href.split('x.com/')[1].split('/communities')[0];
+                }
+                else _x_ = "@" + _x_.querySelector('div:first-child').querySelector('div:first-child').getAttribute('data-testid').split("UserAvatar-Container-")[1]
+            } else if (_x_.textContent)_x_ = _x_.textContent;
+            else _x_ = "";
+            console.log("username:", _x_);
             var selectElement = document.getElementById("mySelect");
             while (selectElement.firstChild) {
                 selectElement.removeChild(selectElement.firstChild);
