@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         守护世界大使猛猛推（间隔秒）
-// @version      0.1.12
-// @description  批量定时
+// @name         守护世界大使猛猛推
+// @version      0.1.13
+// @description  批量定
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunTimer.js
 // @downloadURL  https://killeveee.github.io/RunTimer.js
@@ -107,14 +107,17 @@
         <label>最大发布间隔（秒）</label>
         <input type="number" id="scheduler-maxInterval" value="60" min="1">
 
+        <label>TAG</label>
+        <select id="mySelect"></select>
+
         <label>推文内容（每行一条推文）</label>
         <textarea id="scheduler-c" style="height:78px;" placeholder="输入推文内容，每行一条推文"></textarea>
 
         <label>随机Emoji（非必填，不填入则不添加）</label>
-        <textarea id="emoji-list" style="height:28px;">😊🥰😍🤗🥳😎🌟✨💫⭐️🌈🎉🎊💝💖💗💓💞💕❤️💜🧡💚💛💙🤍❤️‍🩹🎯🎪🎨🎭🎪🎡🎢🌅🌄☀️🌤️⛅️🌥️🌊🏖️🌿☘️🍀🌸🌺🌼🌻💐🌹🥀🦋🕊️🐣🐥🦄🦁🐯🦊🐨🐼🐷🐝🍎🍓🍒🍑🍊🍋🍍🥝🍇🥭🧁🍰🎂🍮🍪🍨🍧🍦🥤🧃🎈🎆🎇🏆🎖️🏅🥇👑💎💫🌠⚡️💪👊✌️🤝🙌👐🤲🫂🎵🎶🎹🎸🪕🎺📚💡💭💫🌈🎨🎯</textarea>
+        <textarea id="emoji-list" style="height:31px;margin-bottom:5px">😊🥰😍🤗🥳😎🌟✨💫⭐️🌈🎉🎊💝💖💗💓💞💕❤️💜🧡💚💛💙🤍❤️‍🩹🎯🎪🎨🎭🎪🎡🎢🌅🌄☀️🌤️⛅️🌥️🌊🏖️🌿☘️🍀🌸🌺🌼🌻💐🌹🥀🦋🕊️🐣🐥🦄🦁🐯🦊🐨🐼🐷🐝🍎🍓🍒🍑🍊🍋🍍🥝🍇🥭🧁🍰🎂🍮🍪🍨🍧🍦🥤🧃🎈🎆🎇🏆🎖️🏅🥇👑💎💫🌠⚡️💪👊✌️🤝🙌👐🤲🫂🎵🎶🎹🎸🪕🎺📚💡💭💫🌈🎨🎯</textarea>
 
-        <label id="show-tweetTime" style="color:#f0721f;padding:0 0 0 10px"></label>
-        <label id="show-scheduleContent" style="color:#f0721f;padding:0 0 0 10px"></label>
+        <label id="show-tweetTime" style="color:#f0721f;margin-bottom:1px"></label>
+        <label id="show-scheduleContent" style="color:#f0721f;"></label>
         <button id="scheduler-generateBtn" style="background:#eff3f4;color:black;margin-right:3px">开始定时</button>
         <button id="scheduler-stopBtn" style="background:#f0721f">停止定时</button>
         <button id="scheduler-scheduleBtn" style="background:#cdcdcd;color: #282828;float:right">查看进度</button>
@@ -152,6 +155,11 @@
             }
         }
         updateSchedule();
+        var selectElement = document.getElementById("mySelect");
+        while (selectElement.firstChild) {
+            selectElement.removeChild(selectElement.firstChild);
+        }
+        GTLis(_x_);
     });
     const generateBtn = form.querySelector('#scheduler-generateBtn');
     if (generateBtn) {
@@ -173,7 +181,10 @@
             var minInterval = parseInt(document.getElementById('scheduler-minInterval').value);
             var maxInterval = parseInt(document.getElementById('scheduler-maxInterval').value);
             //var _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.textContent;
-            Run(c, startTimeInput, minInterval, maxInterval, _x_);
+            var selectElement = document.getElementById("mySelect");
+            var Sid = selectElement.value;
+            console.log(Sid);
+            Run(c, startTimeInput, minInterval, maxInterval, _x_, Sid);
         });
     }
     const stopBtn = form.querySelector('#scheduler-stopBtn');
