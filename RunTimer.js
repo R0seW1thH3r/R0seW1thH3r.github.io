@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         守护世界大使猛猛推（间隔秒）
-// @version      0.1.14
+// @version      0.1.15
 // @description  批量定时
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunTimer.js
@@ -174,8 +174,8 @@
             });
             localStorage.setItem('emojis', JSON.stringify(emojis));
             let c = document.getElementById('scheduler-c').value;
-            if (c == '') {
-                alert('请输入推文内容');
+            if (c == '' || c == null || c == 0) {
+                alert('请输入有效推文内容');
                 return;
             }
             localStorage.setItem('content', c);
