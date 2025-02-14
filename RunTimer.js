@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         守护世界大使猛猛推（间隔秒）
-// @version      0.1.15
+// @version      0.1.16
 // @description  批量定时
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunTimer.js
@@ -127,17 +127,17 @@
     btn.addEventListener('click', () => {
         const isVisible = form.style.display === 'block';
         if (!isVisible){
-            _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-            if (!_x_){
-                _x_=document.querySelector('[data-testid="SideNav_AccountSwitcher_Button"]');
-                if(!_x_) {
-                    _x_=document.evaluate('//*[@id="layers"]/div[1]/div[2]/div/div/div/nav/a[6]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-                    if(!_x_)_x_ = "";
-                    else _x_ = _x_.href.split('x.com/')[1].split('/communities')[0];
-                }
-                else _x_ = "@" + _x_.querySelector('div:first-child').querySelector('div:first-child').getAttribute('data-testid').split("UserAvatar-Container-")[1]
-            } else if (_x_.textContent)_x_ = _x_.textContent;
-            else _x_ = "";
+            for (var i = 0; i < 1; i++) {
+                _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                if (_x_ && _x_.textContent){_x_ = _x_.textContent;break;}
+                _x_ = document.evaluate('//*[@id="layers"]/div[1]/div[2]/div/div/div/nav/a[6]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                if (_x_){_x_ = "@" + _x_.href.split('x.com/')[1].split('/communities')[0];break;}
+                _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/main/div/div/div[3]/div/div[2]/div[1]/div/div/div/div[1]/div[1]/div', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                if (_x_){_x_ = "@" + _x_.getAttribute('data-testid').split("UserAvatar-Container-")[1];break;}
+                _x_ = document.querySelector('[data-testid="SideNav_AccountSwitcher_Button"]');
+                if (_x_){_x_ = "@" + _x_.querySelector('div:first-child').querySelector('div:first-child').getAttribute('data-testid').split("UserAvatar-Container-")[1];break;}
+            }
+
             console.log("username:", _x_);
             var selectElement = document.getElementById("mySelect");
             while (selectElement.firstChild) {
@@ -182,7 +182,6 @@
             var startTimeInput = document.getElementById('scheduler-startTime').value;
             var minInterval = parseInt(document.getElementById('scheduler-minInterval').value);
             var maxInterval = parseInt(document.getElementById('scheduler-maxInterval').value);
-            //var _x_ = document.evaluate('//*[@id="react-root"]/div/div/div[2]/header/div/div/div/div[2]/div/button/div[2]/div/div[2]/div/div/div/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.textContent;
             var selectElement = document.getElementById("mySelect");
             var Sid = selectElement.value;
             console.log(Sid);
